@@ -23,16 +23,10 @@ This is a robust payment application built using modern web technologies. It cur
 
 - **Transition to PostgreSQL** for enhanced data management.
 - **Monorepo structure** using Turborepo for improved scalability and modularity.
+- **Deploy on AWS**
 - **Integration of additional tech** for better performance and security.
 
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests for any improvements or bug fixes.
 
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
-## Contact
-
-For any inquiries, reach out at [your email or contact info].
