@@ -1,6 +1,14 @@
+import NavBar from "../src/components/NavBar"
+import Balance from "../src/components/Balance"
+import UserList from "../src/components/UserList"
+
 const Dashboard = () => {
   return(
-    <div>Im in the Dashboard</div>
+    <div>
+      <NavBar></NavBar>
+      <Balance></Balance>
+      <UserList></UserList>
+    </div>
   )
 }
 

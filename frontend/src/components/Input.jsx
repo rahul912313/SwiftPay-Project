@@ -1,4 +1,4 @@
-const Input = ({label, placeholder}) => {
+const Input = ({label, placeholder, onChange}) => {
   return (
     <div className="flex flex-col gap-2">
       {/* Label styling */}
@@ -6,6 +6,7 @@ const Input = ({label, placeholder}) => {
       
       {/* Input field styling */}
       <input 
+        onChange={onChange}
         type="text" 
         required 
         placeholder={placeholder} 
