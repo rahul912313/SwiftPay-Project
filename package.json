@@ -1,0 +1,11 @@
+{
+  "name": "swiftpay",
+  "version": "1.0.0",
+  "description": "This is a robust payment application built using modern web technologies. It currently leverages **React**, **Zod**, and the **MERN (MongoDB, Express, React, Node.js)** stack. Future enhancements will include transitioning to **PostgreSQL** for database management and adopting a **monorepo** structure using **Turborepo** to optimize project management and build efficiency.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

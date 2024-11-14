@@ -1,10 +1,12 @@
 import UserComponent from "../components/UserComponent";
 import { useEffect, useState } from "react";
 import WelcomeMsg from "./WelcomeMsg";
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const [user, setUser] = useState([]);
   const [searchfilter, setSearchfilter] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -49,7 +51,10 @@ const UserList = () => {
       {user.length === 0 && <WelcomeMsg />}
       <div className="space-y-3">
         {user.map((user) => {
-          return <UserComponent key={user._id} firstname={user.firstname} lastname={user.lastname} />;
+          return <UserComponent key={user._id} firstname={user.firstname} lastname={user.lastname} openSend={()=>{
+            console.log("Send button clicked")
+            navigate(`/transfer?id=${user._id}&name=${user.firstname}`)
+          }}/>;
         })}
       </div>
 

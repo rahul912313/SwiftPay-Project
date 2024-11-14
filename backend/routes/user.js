@@ -26,11 +26,22 @@ const signinbody = z.object({
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  console.log("User Router is working");
-  res.json({
-    message: "Hello Im in User Router",
-  });
+router.get("/", async (req, res) => {
+  try {
+    // Fetch all users from the database
+    const users = await User.find();
+
+    // Map and return user data
+    res.json({
+      users,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
 });
 
 router.post("/signup", async (req, res) => {
@@ -128,20 +139,33 @@ router.post("/", authMiddleware, async (req, res) => {
 //Returns all the friend whom you can tranfer money from data
 
 router.get("/bulk", (req, res) => {
-  const filter = req.body.filter || "";
+  const filter = req.query.filter || "";
 
-  const users = User.find({
-    $or: [{ firstName: { $regex: filter } }, { lastName: { $regex: filter } }],
-  });
+  User.find({
+    $or: [
+      { firstname: { $regex: filter, $options: "i" } },
+      { lastname: { $regex: filter, $options: "i" } },
+    ],
+  })
+    // .lean() // Converts Mongoose documents to plain JavaScript objects
+    .then((users) => {
+      // Transform each user to only return the desired fields
+      const userData = users.map((user) => ({
+        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        _id: user._id,
+      }));
 
-  res.json({
-    user: users.map((user) => ({
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      _id: user._id,
-    })),
-  });
+      res.json({
+        users: userData, // Return the filtered and transformed users list
+      });
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: err.message });
+    });
 });
 
 module.exports = router;

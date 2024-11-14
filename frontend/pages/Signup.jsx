@@ -4,6 +4,7 @@ import Input from "../src/components/Input";
 import Button from "../src/components/Button";
 import EndNote from "../src/components/EndNote";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
 
@@ -12,23 +13,37 @@ const Signup = () => {
   const[username, setUsername] = useState("");
   const[password, setPassword] = useState("");
 
-  const handleSignup = () => {
+  const navigate = useNavigate();
 
-    useEffect(() => {
+  const handleSignup = () => {
+    console.log("Button clicked")
       fetch('http://localhost:4000/api/v1/user/signup',{
         method : "POST",
         headers : {'Content-Type' : "application/json"},
-        body : {
-          username : username,
-          firstname : firstname,
-          password : password,
-          lastname : lastName
+        body: JSON.stringify({
+          username: username,
+          firstname: firstname,
+          password: password,
+          lastname: lastname,
+        })
+        
+      })
+      .then((res) => {
+        if(res.ok){
+          return res.json();
+        }
+        else{
+          throw new Error("Failed to sign up. Please try again.");
         }
       })
-      .then(res => res.json())
-      .then(console.log("Data sent to server - Signup succesfull"))
-    }, [])
-
+      .then((data) => {
+        localStorage.setItem("authToken", data.token)
+        navigate('/dashboard')
+      })
+      .catch((e) => {
+        console.error("Error is: " , e.message);
+        alert(e.message);
+      })
   }
 
 
@@ -48,13 +63,14 @@ const Signup = () => {
       <Input onChange={(e) => {
         setUsername(e.target.value)
       }} label="Email" placeholder="abc@gmail.com" />
-      <Input onChange={
+      <Input onChange={(e) => {
         setPassword(e.target.value)
+      }
       } label="Password" placeholder="••••••••" />
     </div>
 
     <div className="mt-6">
-      <Button onClick={handleSignup()} label="Sign Up" />
+      <Button onClick={()=>handleSignup()} label="Sign Up" />
     </div>
 
     <div className="mt-4 text-center">
