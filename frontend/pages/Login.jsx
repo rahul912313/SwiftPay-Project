@@ -32,12 +32,12 @@ const Login = () => {
       }
     })
     .then((data) => {
-      localStorage.setItem("authToken", data.token);  // Save the token in localStorage
+      localStorage.setItem("authToken", data.token);  
       navigate("/dashboard");  // Navigate to dashboard on success
     })
     .catch((e) => {
-      console.error("Error msg: ", e.message);  // Log error
-      alert(e.message);  // Alert the user about the error
+      console.error("Error msg: ", e.message);  
+      alert(e.message);  
     });
   };
   

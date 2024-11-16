@@ -7,15 +7,22 @@ import Dashboard from '../pages/Dashboard.jsx'
 import Signup from '../pages/Signup.jsx'
 import Login from '../pages/Login.jsx'
 import SendMoney from '../pages/SendMoney.jsx'
+import { AuthProvider } from '../store/AuthContext.jsx'
+import AuthenticatedRoute from './components/AuthenticateRoute.jsx'
+import Landing from '../pages/Landing.jsx'
 
 const router = createBrowserRouter([
   {
     path : "/",
-    element : <App/>
+    element : <Landing/>
   },
   {
     path : "/dashboard",
-    element : <Dashboard/>
+    element : (
+      <AuthenticatedRoute>
+        <Dashboard/>
+      </AuthenticatedRoute>
+    )
   },
   {
     path : "/login",
@@ -27,12 +34,18 @@ const router = createBrowserRouter([
   },
   {
     path : "/transfer",
-    element : <SendMoney/>
+    element : (
+      <AuthenticatedRoute>
+        <SendMoney/>
+      </AuthenticatedRoute>
+    )
   },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )
