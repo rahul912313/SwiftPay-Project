@@ -7,14 +7,14 @@ const AuthenticatedRoute = ({children}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-
-    console.log(isAuthenticated);
-
-    if(!isAuthenticated && !isLoading){
-      navigate("/");
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        // If not authenticated, redirect to the landing page
+        navigate("/"); 
+      }
     }
-  }, [isAuthenticated])
-
+  }, [isAuthenticated, isLoading, navigate]);
+  
   // Show loading if still checking for authentication 
   if(isLoading){
     return(

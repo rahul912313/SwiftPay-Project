@@ -5,6 +5,8 @@ import Button from "../src/components/Button";
 import EndNote from "../src/components/EndNote";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../store/AuthContext";
 
 const Signup = () => {
 
@@ -14,6 +16,13 @@ const Signup = () => {
   const[password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const {isAuthenticated} = useContext(AuthContext);
+
+  useEffect(()=>{
+    if(isAuthenticated){
+      navigate("/dashboard")
+    }
+  },[isAuthenticated, navigate])
 
   const handleSignup = () => {
     console.log("Button clicked")

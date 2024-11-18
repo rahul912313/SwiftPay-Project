@@ -28,14 +28,16 @@ const AuthProvider = ({children}) => {
       // }catch(e){
       //   logout();
       // }
+    }else{
+      setAuthenticated(false);
     }
     setLoading(false);
   }, []);
 
-  // // Log isAuthenticated here to see the updated value
-  // useEffect(() => {
-  //   console.log("isAuthenticated:", isAuthenticated); // This will show the updated value
-  // }, [isAuthenticated]); // This effect will run whenever isAuthenticated changes
+  // Log isAuthenticated here to see the updated value
+  useEffect(() => {
+    console.log("isAuthenticated:", isAuthenticated); // This will show the updated value
+  }, []); // This effect will run whenever isAuthenticated changes
 
   const login = (token) => {
     localStorage.setItem("authToken", token);
