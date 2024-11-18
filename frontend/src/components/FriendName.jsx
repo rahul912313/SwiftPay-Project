@@ -1,4 +1,9 @@
 const FriendName = ({ name }) => {
+  if(!name){
+    return(
+      <div>No Name</div>
+    )
+  }
   const firstInitial = name.charAt(0).toUpperCase(); 
   
   return (

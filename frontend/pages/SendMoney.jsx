@@ -4,20 +4,22 @@ import Input from "../src/components/Input";
 import Button from "../src/components/Button";
 import FriendName from "../src/components/FriendName";
 import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 const SendMoney = () => {
 
   const [searchParams] = useSearchParams();
+  const[amount, setAmount] = useState();
   const name = searchParams.get("name");
   const userId = searchParams.get("id");
 
   const initiateTransfer = () => {
     fetch("http://localhost:5173/api/v1/transfer",{
       method : "POST",
-      body : {
+      body : JSON.stringify({
         to : userId,
         amount : amount
-      }
+      })
     })
   }
 
@@ -34,11 +36,17 @@ const SendMoney = () => {
         
         <div className="mt-6">
           <SubHeading label="Amount (in $)" />
-          <Input label="" placeholder="Enter Amount" />
+          <Input onChange={(e) => {
+            setAmount(e.target.value);
+            // console.log(amount);
+          }} label="" placeholder="Enter Amount" />
         </div>
 
         <div className="mt-6">
-          <Button initiateTransfer={initiateTransfer} label="Send" />
+          <Button onClick={()=>{
+            // console.log("Buttton clicked")
+            initiateTransfer()
+          }} label="Send" />
         </div>
       </div>
     </div>

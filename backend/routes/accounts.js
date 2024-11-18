@@ -42,37 +42,36 @@ router.get("/balance", authMiddleware, async (req, res) => {
 });
 
 router.post("/transfer", authMiddleware, async (req, res) => {
-  //Initialize session
   const session = await mongoose.startSession();
 
-  //Start the transaction
+  // Start the transaction
   session.startTransaction();
 
   try {
     const { to, amount } = req.body;
 
-    // Find the from account and use .session(session) in every await codeline
-    const account = await User.findOne({ userId: req.userId }).session(session);
-
+    // Find the account of the user making the transfer
+    const account = await User.findOne({ _id: req.userId }).session(session);
     if (!account) {
-      res.status(401).json({
+      return res.status(401).json({
         message: "User not found",
+        userId: req.userId,
       });
     } else if (account.balance < amount) {
-      res.status(401).json({
+      return res.status(401).json({
         message: "Not sufficient balance",
       });
     }
 
-    // Find the to account and use .session(session) in every await codeline
-    const toAccount = await User.findOne({ userId: to }).session(session);
+    // Find the recipient account
+    const toAccount = await User.findOne({ _id: to }).session(session);
     if (!toAccount) {
-      res.status(401).json({
-        message: "User not found",
+      return res.status(401).json({
+        message: "Recipient user not found",
       });
     }
 
-    // Perform the Transaction
+    // Perform the transaction (debit and credit the respective accounts)
     await Account.updateOne(
       { userId: req.userId },
       { $inc: { balance: -amount } }
@@ -83,19 +82,23 @@ router.post("/transfer", authMiddleware, async (req, res) => {
       { $inc: { balance: amount } }
     ).session(session);
 
-    //After transaction is comnpleted, commit transaction
+    // Commit the transaction if everything is successful
     await session.commitTransaction();
-    res.json({
-      message: "Transfer Succesfull",
+
+    // Send success response
+    return res.json({
+      message: "Transfer successful",
     });
   } catch (e) {
+    // If any error occurs, abort the transaction
     await session.abortTransaction();
-    res.json({
-      message: "Transaction failed due to : ",
-      e,
+
+    // Send failure response
+    return res.status(500).json({
+      message: "Transaction failed due to: " + e.message,
     });
   } finally {
-    //End session
+    // End session
     await session.endSession();
   }
 });
