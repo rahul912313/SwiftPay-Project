@@ -1,7 +1,15 @@
-const Button = ({ label, onClick }) => {
+const Button = ({ label, onClick, className, isLoading, disabled }) => {
   return (
-    <button onClick={onClick} className="w-full px-6 py-3 bg-black text-white text-lg font-semibold rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
-      {label}
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 rounded-lg shadow ${
+        disabled
+          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+          : "bg-blue-600 text-white hover:bg-blue-700 transition"
+      } ${className}`}
+      disabled={disabled || isLoading}
+    >
+      {isLoading ? "Loading..." : label}
     </button>
   );
 };

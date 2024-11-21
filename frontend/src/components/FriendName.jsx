@@ -1,17 +1,21 @@
 const FriendName = ({ name }) => {
-  if(!name){
-    return(
-      <div>No Name</div>
-    )
-  }
-  const firstInitial = name.charAt(0).toUpperCase(); 
-  
   return (
-    <div className="flex items-center space-x-4">
-      <div className="w-8 h-8 rounded-full bg-gray-600 text-white flex items-center justify-center font-semibold">
-        {firstInitial}
-      </div>
-      <div className="text-lg font-semibold">{name}</div>
+    <div className="text-center mb-6">
+      <h1 className="text-2xl font-bold text-gray-800">Send Money</h1>
+      {name ? (
+        <div className="mt-4 bg-blue-100 p-4 rounded-lg inline-flex items-center">
+          <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-xl">
+            {name.charAt(0).toUpperCase()}
+          </div>
+          <div className="ml-4 text-lg font-bold text-gray-800">
+            Sending to: <span className="text-blue-600">{name}</span>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 bg-red-100 text-red-600 p-4 rounded-lg">
+          No Friend Selected
+        </div>
+      )}
     </div>
   );
 };
